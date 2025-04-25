@@ -1,37 +1,53 @@
 package Model.Entities;
 
 public class Hospede {
-    private String Name;
-    private Integer CPF;
-    private Integer phone;
+    private Integer id;
+    private String name;
+    private String cpf;
+    private String phone;
 
-    public Hospede(String name, Integer CPF, Integer phone) {
-        Name = name;
-        this.CPF = CPF;
+    public Hospede() {
+    }
+
+    public Hospede(Integer id, String name, String CPF, String phone) {
+        this.id = id;
+        this.name = name;
+        this.cpf = CPF;
         this.phone = phone;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
-    public Integer getCPF() {
-        return CPF;
+    public String getCPF() {
+        return cpf;
     }
 
-    public void setCPF(Integer CPF) {
-        this.CPF = CPF;
+    public void setCPF(String CPF) {
+        this.cpf = CPF;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
+
+
+
 }
