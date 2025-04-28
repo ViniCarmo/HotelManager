@@ -7,6 +7,7 @@ import db.DB;
 import db.DbException;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HospedeDaoJdbc implements HospedeDao {
@@ -51,23 +52,23 @@ public class HospedeDaoJdbc implements HospedeDao {
 
     @Override
     public void update(Hospede obj) {
-        PreparedStatement st= null;
+        PreparedStatement st = null;
 
-        try{
-st = conn.prepareStatement("UPDATE hospede " +
-        "SET nome = ?, cpf = ?, telefone = ? " +
-        "WHERE id=?");
+        try {
+            st = conn.prepareStatement("UPDATE hospede " +
+                    "SET nome = ?, cpf = ?, telefone = ? " +
+                    "WHERE id=?");
 
-        st.setString(1, obj.getName());
-        st.setString(2, obj.getCPF());
-        st.setString(3, obj.getPhone());
-        st.setInt(4, obj.getId());
+            st.setString(1, obj.getName());
+            st.setString(2, obj.getCPF());
+            st.setString(3, obj.getPhone());
+            st.setInt(4, obj.getId());
 
-        st.executeUpdate();
+            st.executeUpdate();
 
         } catch (Exception e) {
             throw new DbException(e.getMessage());
-        }finally {
+        } finally {
             DB.closeStatement(st);
         }
 
@@ -76,26 +77,50 @@ st = conn.prepareStatement("UPDATE hospede " +
     @Override
     public void deleteById(Integer id) {
         PreparedStatement st = null;
-        try{
-        st = conn.prepareStatement("DELETE FROM hospede " +
-                "WHERE id = ?");
+        try {
+            st = conn.prepareStatement("DELETE FROM hospede " +
+                    "WHERE id = ?");
 
-        st.setInt(1, id);
-        st.executeUpdate();
-    } catch (SQLException e) {
+            st.setInt(1, id);
+            st.executeUpdate();
+        } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }finally {
+        } finally {
             DB.closeStatement(st);
         }
     }
 
-        @Override
+    @Override
     public Hospede findById(Integer id) {
         return null;
     }
 
     @Override
     public List<Hospede> findAll() {
-        return null;
+        List<Hospede> list = new ArrayList<>();
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT * FROM hospede");
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Hospede hospede = new Hospede();
+                hospede.setId(rs.getInt("id"));
+                hospede.setName(rs.getString("nome"));
+                hospede.setCPF(rs.getString("cpf"));
+                hospede.setPhone(rs.getString("telefone"));
+
+                list.add(hospede);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
+        }
+        return list;
     }
 }

@@ -5,7 +5,7 @@ import Model.Entities.Room;
 import java.util.List;
 
 public interface RoomDao {
-    void update(Room obj);
+    void updateStatus(Room obj);
 
     List<Room> findAll();
 
