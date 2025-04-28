@@ -75,21 +75,27 @@ st = conn.prepareStatement("UPDATE hospede " +
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement st = null;
+        try{
+        st = conn.prepareStatement("DELETE FROM hospede " +
+                "WHERE id = ?");
 
+        st.setInt(1, id);
+        st.executeUpdate();
+    } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }finally {
+            DB.closeStatement(st);
+        }
     }
 
-    @Override
+        @Override
     public Hospede findById(Integer id) {
         return null;
     }
 
     @Override
     public List<Hospede> findAll() {
-        return null;
-    }
-
-    @Override
-    public List<Hospede> FindByRoom(Room room) {
         return null;
     }
 }

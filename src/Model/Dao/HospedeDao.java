@@ -16,6 +16,4 @@ public interface HospedeDao {
 
     List<Hospede> findAll();
 
-    List<Hospede> FindByRoom(Room room);
-
 }

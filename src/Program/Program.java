@@ -71,6 +71,7 @@ public class Program {
             System.out.println();
         }
 
-        System.out.println("Okay, now let's choose the room");
+        System.out.println("Okay " + name + " O que deseja fazer agora?");
+
     }
 }
