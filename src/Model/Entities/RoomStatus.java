@@ -1,6 +1,6 @@
 package Model.Entities;
 
 public enum RoomStatus {
-    LIVRe,
+    LIVRE,
     OCUPADO
 }

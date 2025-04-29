@@ -46,4 +46,13 @@ public class Room {
     public void setStatus(RoomStatus status) {
         this.status = status;
     }
+
+    @Override
+    public String toString() {
+        return "Room " +
+                "id=" + id +
+                ", roomNumber=" + roomNumber +
+                ", pricePerNight=" + pricePerNight +
+                ", status=" + status;
+    }
 }

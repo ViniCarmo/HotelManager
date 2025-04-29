@@ -1,6 +1,7 @@
 package Model.Dao.Impl;
 
 import Model.Dao.RoomDao;
+import Model.Entities.Hospede;
 import Model.Entities.Room;
 import Model.Entities.RoomStatus;
 import db.DB;
@@ -42,6 +43,11 @@ public class RoomDaoJdbc implements RoomDao {
     }
 
     @Override
+    public Room findById(Integer id) {
+        return null;
+    }
+
+    @Override
     public List<Room> findAll() {
             List<Room> list = new ArrayList<>();
 
@@ -53,7 +59,7 @@ public class RoomDaoJdbc implements RoomDao {
                     room.setId(rs.getInt("id"));
                     room.setRoomNumber(rs.getInt("numero"));
                     room.setPricePerNight(rs.getDouble("preco_por_noite"));
-                    room.setStatus(RoomStatus.valueOf(rs.getString("status")));
+                    room.setStatus(RoomStatus.valueOf(rs.getString("status").toUpperCase()));
 
                     list.add(room);
                 }

@@ -2,8 +2,11 @@ package Program;
 
 import Model.Dao.DaoFactory;
 import Model.Dao.HospedeDao;
+import Model.Dao.RoomDao;
 import Model.Entities.Hospede;
+import Model.Entities.Room;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Program {
@@ -71,7 +74,19 @@ public class Program {
             System.out.println();
         }
 
-        System.out.println("Okay " + name + " O que deseja fazer agora?");
+        System.out.println();
+        System.out.println("Okay " + name + ", let's choose the room ");
 
+        RoomDao roomDao = DaoFactory.createRoomDao();
+
+        List<Room> listaQuartos = roomDao.findAll();
+        for (Room obj : listaQuartos){
+            System.out.println(obj);
+        }
+
+        System.out.println("Enter the room number you want: ");
+        int numberRoom = scanner.nextInt();
+        System.out.println("Now enter the number of nights:  ");
+        int nights = scanner.nextInt();
     }
 }

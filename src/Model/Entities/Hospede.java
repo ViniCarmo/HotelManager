@@ -48,6 +48,12 @@ public class Hospede {
         this.phone = phone;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Hospede " +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", phone='" + phone;
+    }
 }
