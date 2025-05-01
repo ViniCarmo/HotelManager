@@ -4,6 +4,7 @@ import Model.Dao.DaoFactory;
 import Model.Dao.HospedeDao;
 import Model.Dao.RoomDao;
 import Model.Entities.Hospede;
+import Model.Entities.Reserva;
 import Model.Entities.Room;
 
 import java.util.List;
@@ -88,5 +89,6 @@ public class Program {
         int numberRoom = scanner.nextInt();
         System.out.println("Now enter the number of nights:  ");
         int nights = scanner.nextInt();
+
     }
 }
