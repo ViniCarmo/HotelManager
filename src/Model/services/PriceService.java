@@ -6,8 +6,8 @@ public class PriceService {
 
     Reserva reserva;
 
-    public double total(double pricePerNignht, int nights){
-        return pricePerNignht * nights;
+    public static double total(double pricePerNight , int nights){
+        return pricePerNight  * nights;
     }
 
 }

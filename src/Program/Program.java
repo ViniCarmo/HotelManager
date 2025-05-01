@@ -6,6 +6,8 @@ import Model.Dao.RoomDao;
 import Model.Entities.Hospede;
 import Model.Entities.Reserva;
 import Model.Entities.Room;
+import Model.Entities.RoomStatus;
+import Model.services.PriceService;
 
 import java.util.List;
 import java.util.Scanner;
@@ -81,14 +83,35 @@ public class Program {
         RoomDao roomDao = DaoFactory.createRoomDao();
 
         List<Room> listaQuartos = roomDao.findAll();
-        for (Room obj : listaQuartos){
+        for (Room obj : listaQuartos) {
             System.out.println(obj);
         }
 
-        System.out.println("Enter the room number you want: ");
+        System.out.println("Enter the room number you want (1-10): ");
         int numberRoom = scanner.nextInt();
         System.out.println("Now enter the number of nights:  ");
         int nights = scanner.nextInt();
 
+        Room room = roomDao.findById(numberRoom);
+        if (room == null) {
+            System.out.println("Room not found. Exiting...");
+            return;
+        }
+
+        if (room.getStatus() != RoomStatus.LIVRE) {
+            System.out.println("Room is already occupied. Please choose another one.");
+            return;
+        }
+
+        double total = PriceService.total(room.getPricePerNight(), nights);
+
+        Reserva reserva = new Reserva(null, hospede, room, nights, total);
+        DaoFactory.createReservaDao().insert(reserva);
+
+        room.setStatus(RoomStatus.OCUPADO);
+        roomDao.updateStatus(room);
+
+        System.out.println("Reservation completed successfully!");
+        System.out.println(reserva);
     }
 }

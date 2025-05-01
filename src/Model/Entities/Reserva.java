@@ -4,14 +4,14 @@ public class Reserva {
     private Integer id;
     private Hospede hospede;
     private Room room;
-    private Integer nights;
+    private int nights;
     private Double totalValue;
 
     public Reserva(){
 
     }
 
-    public Reserva(Integer id, Hospede hospede, Room room, Integer nights, Double totalValue) {
+    public Reserva(Integer id, Hospede hospede, Room room, int nights, Double totalValue) {
         this.id = id;
         this.hospede = hospede;
         this.room = room;
