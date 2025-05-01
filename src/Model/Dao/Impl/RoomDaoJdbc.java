@@ -24,7 +24,7 @@ public class RoomDaoJdbc implements RoomDao {
     @Override
     public void updateStatus(Room obj) {
         PreparedStatement st = null;
-        try{
+        try {
             st = conn.prepareStatement("UPDATE quarto " +
                     "SET status = ? " +
                     "WHERE id = ?");
@@ -35,7 +35,7 @@ public class RoomDaoJdbc implements RoomDao {
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }finally {
+        } finally {
             {
                 DB.closeStatement(st);
             }
@@ -44,31 +44,57 @@ public class RoomDaoJdbc implements RoomDao {
 
     @Override
     public Room findById(Integer id) {
-        return null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT * FROM quarto WHERE id = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                Room room = new Room();
+                room.setId(rs.getInt("id"));
+                room.setRoomNumber(rs.getInt("numero"));
+                room.setPricePerNight(rs.getDouble("preco_por_noite"));
+
+                String statusStr = rs.getString("status").trim().toUpperCase();
+                room.setStatus(RoomStatus.valueOf(statusStr));
+
+                return room;
+            }
+            return null; // não achou nenhum hospede com esse ID
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
     }
 
     @Override
     public List<Room> findAll() {
-            List<Room> list = new ArrayList<>();
+        List<Room> list = new ArrayList<>();
 
-            try (PreparedStatement st = conn.prepareStatement("SELECT * FROM quarto");
-                 ResultSet rs = st.executeQuery()) {
+        try (PreparedStatement st = conn.prepareStatement("SELECT * FROM quarto");
+             ResultSet rs = st.executeQuery()) {
 
-                while (rs.next()) {
-                    Room room = new Room();
-                    room.setId(rs.getInt("id"));
-                    room.setRoomNumber(rs.getInt("numero"));
-                    room.setPricePerNight(rs.getDouble("preco_por_noite"));
-                    room.setStatus(RoomStatus.valueOf(rs.getString("status").toUpperCase()));
+            while (rs.next()) {
+                Room room = new Room();
+                room.setId(rs.getInt("id"));
+                room.setRoomNumber(rs.getInt("numero"));
+                room.setPricePerNight(rs.getDouble("preco_por_noite"));
+                room.setStatus(RoomStatus.valueOf(rs.getString("status").toUpperCase()));
 
-                    list.add(room);
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException("Erro ao buscar quartos: " + e.getMessage(), e);
+                list.add(room);
             }
 
-            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException("Erro ao buscar quartos: " + e.getMessage(), e);
         }
 
+        return list;
     }
+
+}

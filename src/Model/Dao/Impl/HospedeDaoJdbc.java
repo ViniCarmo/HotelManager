@@ -92,7 +92,30 @@ public class HospedeDaoJdbc implements HospedeDao {
 
     @Override
     public Hospede findById(Integer id) {
-        return null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = conn.prepareStatement("SELECT * FROM hospede WHERE id = ?");
+            st.setInt(1, id);
+            rs = st.executeQuery();
+
+            if (rs.next()) {
+                Hospede hospede = new Hospede();
+                hospede.setId(rs.getInt("id"));
+                hospede.setName(rs.getString("nome"));
+                hospede.setCPF(rs.getString("cpf"));
+                hospede.setPhone(rs.getString("telefone"));
+                return hospede;
+            }
+            return null; // não achou nenhum hospede com esse ID
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeResultSet(rs);
+            DB.closeStatement(st);
+        }
     }
 
     @Override
@@ -117,7 +140,7 @@ public class HospedeDaoJdbc implements HospedeDao {
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
-        }finally {
+        } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
